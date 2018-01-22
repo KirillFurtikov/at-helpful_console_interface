@@ -1,6 +1,6 @@
 @echo OFF
 :START
-set VERSION=0.7.2
+set VERSION=0.8
 :: Сохранить файл с нужной кодировкой и если текст корректно не отображается, то попробовать разные числовые значения
 :: Кодировки:
 :: 65001	-	для UTF-8
@@ -11,6 +11,7 @@ chcp 65001
 :: ----- ДЕФОЛТНЫЕ НАСТРОЙКИ:
 :: - Путь, куда копировать отчеты аллюра (без слеша в конце!)
 set ALLURE_TARGET_DIR=C:\allure\allure_reports
+set ALLURE_HISTORY_DIR=%ALLURE_TARGET_DIR%\history
 :: Порт по умолчанию для запуска сервера
 set PORT=62000
 :: - Директория allure
@@ -20,6 +21,7 @@ title Генератор отчетов Allure v%VERSION%
 CLS
 
 echo ##############################
+echo # Версия %VERSION%
 :: Выводим текушую директорию
 echo # Текущая директория: %cd%
 echo ##############################
@@ -48,6 +50,24 @@ if not "%VERSION%"=="%NEW_VERSION%" (
 	echo # Обновлений не найдено 
 )
 echo ##############################
+exit /B 0
+
+:BACKUPHISTORY <project>
+if exist %RESULT_DIR%history\ if exist %ALLURE_HISTORY_DIR%\%1\ (
+:: Чистим старую историю проекта
+RD /Q /S %ALLURE_HISTORY_DIR%\%1\
+)
+if exist %RESULT_DIR%history\ (
+:: Бэкапим свежее значение
+XCOPY /Q /S /Y %RESULT_DIR%history %ALLURE_HISTORY_DIR%\%1\
+)
+exit /B 0
+
+:COPYPREVIOUSHISTORY <project>
+if exist %ALLURE_HISTORY_DIR%\%1\ (
+:: Используем историю при создании нового отчета
+XCOPY /Q /S /Y %ALLURE_HISTORY_DIR%\%1 %ALLURE_DIR%\history\
+)
 exit /B 0
 
 :FILLENVIRONMENT
@@ -121,10 +141,12 @@ exit /B 0
 exit /B 0
 
 :SUCCESSFUL
+call :COPYPREVIOUSHISTORY %project%
 echo # Генерируем отчет на основе результатов из %ALLURE_DIR% в %RESULT_DIR%
 start /WAIT /MIN "Генерация отчета Allure" cmd /C call allure generate %ALLURE_DIR% -o %RESULT_DIR%
 echo # Отчет сгенерирован в %RESULT_DIR%
 echo ##############################
+call :BACKUPHISTORY %project%
 choice /M "# Открыть отчет?" /C yn 
 if errorlevel == 2 set ACTION=quit
 if %ACTION%==quit goto START
