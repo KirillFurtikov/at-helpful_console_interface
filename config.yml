@@ -1,0 +1,9 @@
+Paths:
+  Allure: 'C:\Autotests\apress-selenium_integration\bin\allure-2.2.1'
+  Projects:
+    Pulscen: 'C:\Autotests\selenium_pulscen'
+    Blizko: 'C:\Autotests\selenium_blizko'
+    Yapokupayu: 'C:\Autotests\selenium_lookmart'
+
+Server:
+  port: 45600
