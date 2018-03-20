@@ -40,21 +40,23 @@ module Helpers
     ].freeze
 
     def self.on_load_message
-      puts '-' * 40
-      puts "Using:"
-      puts "#{self}.products(company_id: 123, db: 0, public_state: 'deleted', type: :csv)"
-      puts "Default values:"
-      puts "- db: 5 # integer"
-      puts "- public_state: ['published', 'unpublished', 'archived'] # all available states"
-      puts "- type: #{FILE_TYPE} # :csv or :txt"
-      puts "- company_id: #{COMPANY_ID}"
-      puts '-' * 20
-      puts "#{self}.categories(company_id: 123, db: 0, type: :csv)"
-      puts "Default values:"
-      puts "- db: 5 # integer"
-      puts "- company_id: #{COMPANY_ID}"
-      puts "- type: #{FILE_TYPE} # :csv or :txt"
-      puts '-' * 40
+      puts <<-HEREDOC
+#{'-' * 40}
+Using:
+  - #{self}.products(company_id: 123, db: 0, public_state: 'deleted', type: :csv)
+Default values:
+  - db: 5 # integer
+  - public_state: ['published', 'unpublished', 'archived'] # all available states
+  - type: #{FILE_TYPE} # :csv or :txt
+  - company_id: #{COMPANY_ID}
+#{'-' * 40}
+#{self}.categories(company_id: 123, db: 0, type: :csv)
+Default values:
+  - db: 5 # integer
+  - company_id: #{COMPANY_ID}
+  - type: #{FILE_TYPE} # :csv or :txt
+#{'-' * 40}
+    HEREDOC
     end
 
     def self.generated_at
