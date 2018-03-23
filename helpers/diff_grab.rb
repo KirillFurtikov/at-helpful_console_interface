@@ -78,7 +78,7 @@ Default values:
       company_id = args.fetch(:company_id, COMPANY_ID)
       file_type  = args.fetch(:type, FILE_TYPE)
 
-      self.set_output_file('products', company_id, file_type)
+      set_output_file('products', company_id, file_type)
 
       yml_ids = Company.find(company_id).products.where("public_state in ('#{statuses}') and yml_id is not NULL").map(&:yml_id)
 
@@ -93,7 +93,7 @@ Default values:
       company_id = args.fetch(:company_id, COMPANY_ID)
       file_type  = args.fetch(:type, FILE_TYPE)
 
-      self.set_output_file('categories', company_id, file_type)
+      set_output_file('categories', company_id, file_type)
 
       yml_ids = Company.find(company_id).product_groups.map(&:yml_id)
 
