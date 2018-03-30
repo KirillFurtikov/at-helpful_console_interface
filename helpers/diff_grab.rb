@@ -40,7 +40,7 @@ module Helpers
     ].freeze
 
     def self.on_load_message
-      puts <<-HEREDOC
+      puts <<-TEXT
 #{'-' * 40}
 Using:
   - #{self}.products(company_id: 123, db: 0, public_state: 'deleted', type: :csv)
@@ -56,7 +56,7 @@ Default values:
   - company_id: #{COMPANY_ID}
   - type: #{FILE_TYPE} # :csv or :txt
 #{'-' * 40}
-    HEREDOC
+      TEXT
     end
 
     def self.generated_at
