@@ -58,6 +58,10 @@ Default values:
 #{'-' * 40}
       TEXT
     end
+	
+    def self.output_file_url
+      "https://#{ENV['SUB_DOMAIN']}.#{ENV['DOMAIN']}#{@output_file.split('public').last}"
+    end
 
     def self.generated_at
       Time.now
@@ -145,7 +149,7 @@ Default values:
       f.puts "Created at: #{self.generated_at}"
       f.close
 
-      return @output_file.split('public').last
+      return self.output_file_url
     end
 
     def self.get_csv(company_id, yml_ids, key)
@@ -173,7 +177,7 @@ Default values:
           csv << values
         end
       end
-        return @output_file.split('public').last
+        return self.output_file_url
     end
 
   self.on_load_message
